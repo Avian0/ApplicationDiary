@@ -138,6 +138,5 @@
                     android:textSize="@dimen/size_15sp" />
             </RelativeLayout>
         </RelativeLayout>
-
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
