@@ -35,6 +35,19 @@ public class LoginActivity extends AppCompatActivity {
 
 
         sharedPreferences = this.getSharedPreferences("saved_info", Context.MODE_PRIVATE);
+
+        createAccount.setOnClickListener(view -> {
+            Intent registerIntent = new Intent(this, RegisterActivity.class);
+            startActivity(registerIntent);
+        });
+
+        if (sharedPreferences.contains("username")) {
+            //User already exists
+            Intent intent = new Intent(this, HomeActivity.class);
+            intent.putExtra("username", sharedPreferences.getString("username","")); //Passing values to another screen
+            startActivity(intent);
+            finish();
+        }
     }
 
 
@@ -61,7 +74,7 @@ public class LoginActivity extends AppCompatActivity {
             String savedUsername = sharedPreferences.getString("username","");
             String savePassword = sharedPreferences.getString("password","");
 
-            if (username.getText().toString().equals(savedUsername)){
+            if (username.getText().toString().equals(savedUsername) && password.getText().toString().equals(savePassword)){
                 Intent intent = new Intent(this, HomeActivity.class);
                 intent.putExtra("Username", username.getText().toString());
                 intent.putExtra("Password", password.getText().toString());
