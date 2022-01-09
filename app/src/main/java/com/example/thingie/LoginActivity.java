@@ -3,8 +3,10 @@ package com.example.thingie;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -18,6 +20,7 @@ public class LoginActivity extends AppCompatActivity {
     EditText username, password;
     TextView forgotPassword, createAccount;
     Button confirm;
+    SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +32,9 @@ public class LoginActivity extends AppCompatActivity {
         forgotPassword = findViewById(R.id.forgotPassword_button);
         createAccount = findViewById(R.id.createAccount_button);
         confirm = findViewById(R.id.confirm_button);
+
+
+        sharedPreferences = this.getSharedPreferences("saved_info", Context.MODE_PRIVATE);
     }
 
 
@@ -52,15 +58,23 @@ public class LoginActivity extends AppCompatActivity {
             alert.show();
         }
         else{
-            Intent intent = new Intent(this, HomeActivity.class);
-            intent.putExtra("Username", username.getText().toString());
-            intent.putExtra("Password", password.getText().toString());
-            startActivity(intent);
+            String savedUsername = sharedPreferences.getString("username","");
+            String savePassword = sharedPreferences.getString("password","");
 
-            username.setText("");
-            password.setText("");
+            if (username.getText().toString().equals(savedUsername)){
+                Intent intent = new Intent(this, HomeActivity.class);
+                intent.putExtra("Username", username.getText().toString());
+                intent.putExtra("Password", password.getText().toString());
+                startActivity(intent);
 
-            Toast.makeText(this, "Login is Successful", Toast.LENGTH_LONG).show();
+                username.setText("");
+                password.setText("");
+            }
+
+            else{
+                Toast.makeText(this, "Login is Successful", Toast.LENGTH_LONG).show();
+            }
+
         }
     }
 }
