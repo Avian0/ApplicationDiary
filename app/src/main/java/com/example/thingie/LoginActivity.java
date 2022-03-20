@@ -26,11 +26,11 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
+        getSupportActionBar().setTitle("Diary");
         username = findViewById(R.id.username_editText);
         password = findViewById(R.id.password_editText);
-        forgotPassword = findViewById(R.id.forgotPassword_button);
-        createAccount = findViewById(R.id.createAccount_button);
+        forgotPassword = findViewById(R.id.forgotPassword_textView);
+        createAccount = findViewById(R.id.createAccount_textView);
         confirm = findViewById(R.id.confirm_button);
 
 
@@ -41,7 +41,7 @@ public class LoginActivity extends AppCompatActivity {
             startActivity(registerIntent);
         });
 
-        if (sharedPreferences.contains("username")) {
+        if (sharedPreferences.contains("username") && !sharedPreferences.getBoolean("logout", false)) {
             //User already exists
             Intent intent = new Intent(this, HomeActivity.class);
             intent.putExtra("username", sharedPreferences.getString("username","")); //Passing values to another screen
@@ -76,18 +76,30 @@ public class LoginActivity extends AppCompatActivity {
 
             if (username.getText().toString().equals(savedUsername) && password.getText().toString().equals(savePassword)){
                 Intent intent = new Intent(this, HomeActivity.class);
-                intent.putExtra("Username", username.getText().toString());
-                intent.putExtra("Password", password.getText().toString());
+                intent.putExtra("username", username.getText().toString());
+                intent.putExtra("password", password.getText().toString());
                 startActivity(intent);
 
                 username.setText("");
                 password.setText("");
-            }
 
-            else{
                 Toast.makeText(this, "Login is Successful", Toast.LENGTH_LONG).show();
             }
 
+            else{
+                Toast.makeText(this, "Password and Username did not match", Toast.LENGTH_LONG).show();
+            }
+
+        }
+    }
+
+    public void ForgotPassword(View view) {
+        if (sharedPreferences.getString("username", "").length() > 0){
+            Intent intent = new Intent(this, ForgotPasswordActivity.class);
+            startActivity(intent);
+        }
+        else{
+            Toast.makeText(this, "User doesn't exist", Toast.LENGTH_SHORT).show();
         }
     }
 }
