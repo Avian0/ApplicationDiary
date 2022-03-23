@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".HomeActivity"
     android:background="@color/background">
-    <TextView
+    <!--<TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/username_textView"
@@ -16,22 +16,25 @@
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="@dimen/size_20sp"
         android:padding="@dimen/size_10sp"
-        android:textSize="@dimen/size_40sp"
+        android:textSize="@dimen/size_20sp"
         android:textColor="@color/text"
-        android:fontFamily="casual"/>
+        android:fontFamily="casual"/>-->
 
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/notes_recyclerView"
-        app:layout_constraintTop_toBottomOf="@id/username_textView"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_wrapBehaviorInParent="skipped"
         android:layout_margin="20dp"
+        android:paddingBottom="@dimen/size_20dp"
         android:textColor="@color/text"
         android:fontFamily="casual"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:layout_width="50dp"
         android:layout_height="50dp"
+        app:fabCustomSize="@dimen/size_50dp"
         android:id="@+id/add_note_fabButton"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"

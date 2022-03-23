@@ -22,7 +22,7 @@
       android:fontFamily="casual"/>
   <com.google.android.material.textfield.TextInputLayout
       android:layout_width="match_parent"
-      android:layout_height="50dp"
+      android:layout_height="wrap_content"
       android:id="@+id/title_textLayout"
       app:layout_constraintLeft_toLeftOf="parent"
       app:layout_constraintTop_toBottomOf="@+id/title_textView"
@@ -30,15 +30,18 @@
 
     <com.google.android.material.textfield.TextInputEditText
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:id="@+id/title_editText"
+        android:inputType="textMultiLine"
+        android:fontFamily="casual"
+        android:textColor="@color/text"
         android:hint="Enter Title"/>
 
   </com.google.android.material.textfield.TextInputLayout>
 
   <com.google.android.material.textfield.TextInputLayout
       android:layout_width="match_parent"
-      android:layout_height="50dp"
+      android:layout_height="wrap_content"
       android:id="@+id/notes_textLayout"
       app:layout_constraintLeft_toLeftOf="parent"
       app:layout_constraintTop_toBottomOf="@id/title_textLayout"
@@ -48,9 +51,10 @@
 
     <com.google.android.material.textfield.TextInputEditText
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:id="@+id/notes_editText"
         android:hint="Enter Your Notes"
+        android:inputType="textMultiLine"
         android:textColor="@color/text"
         android:fontFamily="casual"/>
 

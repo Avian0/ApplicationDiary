@@ -31,7 +31,7 @@ public class RegisterActivity extends AppCompatActivity implements AdapterView.O
         securityQues = findViewById(R.id.register_securityquestion_Spinner);
 
         securityQues.setOnItemSelectedListener(this);
-        ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.security_questions));
+        ArrayAdapter adapter = new ArrayAdapter(this, R.layout.my_spinner_item, getResources().getStringArray(R.array.security_questions));
         securityQues.setAdapter(adapter);
     }
 

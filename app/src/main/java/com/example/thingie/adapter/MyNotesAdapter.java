@@ -59,24 +59,7 @@ public class MyNotesAdapter extends RecyclerView.Adapter<MyNotesAdapter.MyNotesD
         holder.delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new DeleteNotesTask().execute(myNotes.get(position));
-                /*androidx.appcompat.app.AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
-                alertDialog.setTitle("MyNotes");
-                alertDialog.setMessage("Are you sure you want to delete this notes?");
-                alertDialog.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        //Do db operation to delete
-                    }
-                });
-                alertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        //No implementation needed
-                        //TODO
-                    }
-                });
-                alertDialog.show();*/
+                mIActions.itemDeleted(myNotes.get(position));
             }
         });
 
@@ -106,28 +89,6 @@ public class MyNotesAdapter extends RecyclerView.Adapter<MyNotesAdapter.MyNotesD
             rowLayout = itemView.findViewById(R.id.row_layout);
             delete = itemView.findViewById(R.id.delete_button);
             edit = itemView.findViewById(R.id.edit_button);
-        }
-    }
-    class DeleteNotesTask extends AsyncTask<MyNotes, Void, Void> {
-        AppDatabase db;
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            db = Room.databaseBuilder(context, AppDatabase.class, "mynotes").build();
-        }
-
-        @Override
-        protected Void doInBackground(MyNotes... myNotes) {
-            db.myNotesDAO().deleteNotes(myNotes[0]);
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void unused) {
-            super.onPostExecute(unused);
-            //Update ui - Interface
-            mIActions.itemDeleted();
-            Toast.makeText(context, "Deletion Successful", Toast.LENGTH_SHORT).show();
         }
     }
 }

@@ -1,12 +1,16 @@
 package com.example.thingie;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.view.menu.ShowableListMenu;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -15,6 +19,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.thingie.adapter.IActions;
 import com.example.thingie.adapter.MyNotesAdapter;
@@ -24,11 +29,11 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class HomeActivity extends AppCompatActivity implements IActions {
 
 
-    TextView name;
     RecyclerView notesRecyclerView;
     FloatingActionButton addFabButton;
     SharedPreferences sharedPreferences;
@@ -38,17 +43,15 @@ public class HomeActivity extends AppCompatActivity implements IActions {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        getSupportActionBar().setTitle("Home");
-        name = findViewById(R.id.username_textView);
         notesRecyclerView = findViewById(R.id.notes_recyclerView);
         addFabButton = findViewById(R.id.add_note_fabButton);
         sharedPreferences = getSharedPreferences("saved_info", Context.MODE_PRIVATE);
         editor = sharedPreferences.edit();
 
         if(getIntent().hasExtra("username")) {
-            name.setText(getIntent().getStringExtra("username"));
+            getSupportActionBar().setTitle(String.format("%s's notes", getIntent().getStringExtra("username")));
         } else {
-            name.setText("no username found");
+            getSupportActionBar().setTitle("Home");
         }
 
         //prepareDummyDate()
@@ -74,8 +77,26 @@ public class HomeActivity extends AppCompatActivity implements IActions {
     }
 
     @Override
-    public void itemDeleted() {
-        new FetchDataTask(this).execute();
+    public void itemDeleted(MyNotes notes) {
+        androidx.appcompat.app.AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+        alertDialog.setTitle("Confirm Deletion");
+        alertDialog.setMessage("Are you sure you want to delete this notes?");
+        alertDialog.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                //Do db operation to delete
+                new DeleteNotesTask(HomeActivity.this).execute(notes);
+            }
+        });
+        alertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                //No implementation needed
+                //TODO
+            }
+        });
+        alertDialog.show();
+
     }
 
     @Override
@@ -132,6 +153,35 @@ public class HomeActivity extends AppCompatActivity implements IActions {
         protected void onPostExecute(List<MyNotes> myNotes) {
             super.onPostExecute(myNotes);
             notesRecyclerView.setAdapter(new MyNotesAdapter(getApplicationContext(), myNotes, mContext));
+        }
+    }
+
+    class DeleteNotesTask extends AsyncTask<MyNotes, Void, Void> {
+        AppDatabase db;
+        HomeActivity context;
+
+        public DeleteNotesTask(HomeActivity homeContext) {
+            this.context = homeContext;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            db = Room.databaseBuilder(context, AppDatabase.class, "mynotes").build();
+        }
+
+        @Override
+        protected Void doInBackground(MyNotes... myNotes) {
+            db.myNotesDAO().deleteNotes(myNotes[0]);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void unused) {
+            super.onPostExecute(unused);
+            //Update ui - Interface
+            Toast.makeText(context, "Deletion Successful", Toast.LENGTH_SHORT).show();
+            new FetchDataTask(context).execute();
         }
     }
 
