@@ -110,6 +110,21 @@ public class HomeActivity extends AppCompatActivity implements IActions {
         startActivity(intent);
     }
 
+    /***
+     * This is the implementation of newly added method in IActions Interface
+     * @param notes
+     */
+    @Override
+    public void handleClick(MyNotes notes) {
+        Intent intent = new Intent(this, PreviewNotesActivity.class);
+        /*
+         * Here sending entire notes object at once
+         * instead of sending Title, date and details individually
+        */
+        intent.putExtra("notes", notes);
+        startActivity(intent);
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.logoutmenu, menu);

@@ -50,7 +50,9 @@ public class MyNotesAdapter extends RecyclerView.Adapter<MyNotesAdapter.MyNotesD
         holder.rowLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context, "You have clicked item: "+(position+1), Toast.LENGTH_SHORT).show();
+                //Using newly added interface method for handling click action
+                mIActions.handleClick(myNotes.get(position));
+//                Toast.makeText(context, "You have clicked item: "+(position+1), Toast.LENGTH_SHORT).show();
             }
         });
         holder.date.setText(myNotes.get(position).getDate());
