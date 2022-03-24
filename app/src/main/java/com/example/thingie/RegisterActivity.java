@@ -23,7 +23,7 @@ public class RegisterActivity extends AppCompatActivity implements AdapterView.O
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-
+        getSupportActionBar().setTitle("Register Account");
         username = findViewById(R.id.register_username_editText);
         password = findViewById(R.id.register_password_editText);
         securityAns = findViewById(R.id.register_securityquestion_editText);

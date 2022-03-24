@@ -11,4 +11,5 @@
 
     <color name="background">#E2BEEC</color>
     <color name="text">#774B00</color>
+    <color name="notes">#FBE7EE</color>
 </resources>

@@ -9,9 +9,11 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.thingie.database.AppDatabase;
@@ -22,6 +24,7 @@ import java.util.Date;
 
 public class AddNotesActivity extends AppCompatActivity {
     TextInputEditText title, notes;
+    TextView addNotes;
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
     boolean isUpdate;
@@ -33,6 +36,7 @@ public class AddNotesActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("Add Notes");
         title = findViewById(R.id.title_editText);
         notes = findViewById(R.id.notes_editText);
+        addNotes = findViewById(R.id.title_textView);
         sharedPreferences = getSharedPreferences("saved_info", Context.MODE_PRIVATE);
         editor = sharedPreferences.edit();
 
@@ -41,6 +45,9 @@ public class AddNotesActivity extends AppCompatActivity {
             title.setText(getIntent().getStringExtra("title"));
             notes.setText(getIntent().getStringExtra("details"));
             isUpdate = true;
+        }
+        if (!TextUtils.isEmpty(notes.getText().toString())){
+            addNotes.setText("Edit Notes");
         }
     }
     public void SaveNotes(View view) {
