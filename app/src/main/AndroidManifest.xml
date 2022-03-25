@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Thingie">
         <activity
+            android:name=".PreviewNotesActivity"
+            android:exported="false" />
+        <activity
             android:name=".ForgotPasswordActivity"
             android:exported="false" />
         <activity
